@@ -1,11 +1,11 @@
-import NextAuth, { AuthOptions } from "next-auth"
-import GitHubProvider from "next-auth/providers/github"
+import NextAuth, { AuthOptions } from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
 import { z } from "zod";
 
-//Schema for env variables, Zod is a schema validation library type checker 
+//Schema for env variables, Zod is a schema validation library type checker
 const envSchema = z.object({
-    GITHUB_ID: z.string(),
-    GITHUB_SECRET: z.string(),
+  GITHUB_ID: z.string(),
+  GITHUB_SECRET: z.string(),
 });
 
 const env = envSchema.parse(process.env);
@@ -24,6 +24,6 @@ export const authOptions: AuthOptions = {
   },
 };
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export {handler as GET, handler as POST}
+export { handler as GET, handler as POST };
