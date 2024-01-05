@@ -1,10 +1,20 @@
-"use client";
-import React from "react";
+"use client"
+import styles from "@/styles/Home.module.css";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import React from "react";
 
 const SignInButton = () => {
   const { data: session } = useSession();
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    const element = e.currentTarget;
+    element.classList.add("flip-animation");
+
+    setTimeout(() => {
+      element.classList.remove("flip-animation");
+    }, 2000);
+  };
 
   if (session && session.user) {
     return (
@@ -22,19 +32,31 @@ const SignInButton = () => {
     );
   }
   return (
-  <div className="flex justify-center items-center h-screen">
-    <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-      <div className="border-4 border-blue-300 rounded-full w-3/4 h-3/4 absolute"></div>
-      <div className="border-4 border-green-300 rounded-full w-2/3 h-2/3 absolute"></div>
-      <div className="border-4 border-red-300 rounded-full w-1/2 h-1/2 absolute"></div>
-      <div className="border-4 border-yellow-300 rounded-full w-1/3 h-1/3 absolute"></div>
+    <div className="flex justify-center items-center h-screen">
+      <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+        <div
+          onMouseEnter={handleMouseEnter}
+          className="border-4 border-blue-300 rounded-full w-3/4 h-3/4 absolute flip-on-hover"
+        ></div>
+        {/* <div onMouseEnter={handleMouseEnter} className="border-4 border-green-300 rounded-full w-2/3 h-2/3 absolute flip-on-hover"></div> */}
+        <div
+          onMouseEnter={handleMouseEnter}
+          className="border-4 border-red-300 rounded-full w-1/2 h-1/2 absolute flip-on-hover"
+        ></div>
+        <div
+          onMouseEnter={handleMouseEnter}
+          className="border-4 border-yellow-300 rounded-full w-1/3 h-1/3 absolute flip-on-hover"
+        ></div>
+        <div
+          onMouseEnter={handleMouseEnter}
+          className="border-4 border-purple-300 rounded-full w-1/4 h-1/4 absolute flip-on-hover"
+        ></div>
+      </div>
+      <button onClick={() => signIn()} className="text-black-300 z-10">
+        Sign in
+      </button>
     </div>
-    <button onClick={() => signIn()} className="text-blue-300 z-10">
-      Sign in
-    </button>
-  </div>
-);
-
-
+  );
 };
+
 export default SignInButton;
