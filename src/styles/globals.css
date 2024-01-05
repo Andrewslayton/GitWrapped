@@ -26,16 +26,18 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-@keyframes flip {
-  from {
-    transform: rotateY(0deg);
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
   }
 
-  to {
-    transform: rotateY(180deg);
+  50% {
+    transform: translateY(-20px);
   }
 }
 
-.flip-on-hover:hover{
-  animation: flip 1.3s ease-in-out;
+.bounce-on-hover:hover {
+  animation: bounce 0.5s ease;
 }
