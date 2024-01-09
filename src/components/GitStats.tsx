@@ -1,3 +1,4 @@
+"use client"
 import { Octokit } from "@octokit/rest";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
