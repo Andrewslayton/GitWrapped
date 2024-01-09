@@ -5,10 +5,12 @@ import { Octokit } from "@octokit/rest";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+
 interface GitHubRepository {
   id: number;
   name: string;
   full_name: string;
+  commitCount?: number;
 }
 
 const RepositoriesPage = () => {
@@ -22,16 +24,43 @@ const RepositoriesPage = () => {
     console.log("Access Token:", session?.user?.accessToken); // Debug log to check access token
     const fetchRepositories = async () => {
       if (session && session.user && session.user.accessToken) {
-        console.log("Fetching repositories..."); // Debug log
+        console.log("Fetching repositories...");
         setIsLoading(true);
         setError(null);
 
+        if (!session.user.name) {
+          console.log("User name not available, cannot fetch repositories.");
+          return;
+        }
+
         try {
           const octokit = new Octokit({ auth: session.user.accessToken });
+          const authedUser = await octokit.rest.users.getAuthenticated();
           const reposResponse =
             await octokit.rest.repos.listForAuthenticatedUser();
-          console.log("Repositories:", reposResponse.data); // Debug log
+          console.log("Repositories:", reposResponse.data);
           setRepositories(reposResponse.data as GitHubRepository[]);
+
+          const repos = reposResponse.data as GitHubRepository[];
+          for (const repo of repos) {
+            try {
+              const commitCountResponse =
+                await octokit.rest.repos.getCommitActivityStats({
+                  owner: authedUser.data.login,
+                  repo: repo.name,
+                });
+              console.log("Commit count response:", commitCountResponse.data);
+              repo.commitCount = commitCountResponse.data.reduce(
+                (sum, week) => sum + week.total,
+                0,
+              );
+            } catch (commitError) {
+              console.error(
+                `Error fetching commits for repo ${repo.name}:`,
+                commitError,
+              );
+            }
+          }
         } catch (err) {
           console.error(err);
         } finally {
@@ -76,7 +105,9 @@ const RepositoriesPage = () => {
       <div>
         {repositories.map((repo) => (
           <div key={repo.id}>
-            <p>{repo.name}</p>
+            <p>
+              {repo.name} - Commits: {repo.commitCount}
+            </p>
           </div>
         ))}
       </div>
