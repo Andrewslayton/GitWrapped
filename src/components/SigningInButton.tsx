@@ -1,26 +1,18 @@
 "use client";
-import React from "react";
+
+import styles from "@/styles/Home.module.css";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import styles from "@/styles/Home.module.css";
+import { redirect } from "next/navigation";
+import React from "react";
+
 
 const SignInButton = () => {
   const { data: session } = useSession();
 
   if (session && session.user) {
-    return (
-      <header className="flex gap-4 p-4 bg-black">
-        <Link href="/">
-          <h1 className="text-blue-300">Find a Partner!</h1>
-        </Link>
-        <div className="flex gap-4 ml-auto">
-          <p className="text-blue-300">{session.user.name}</p>
-          <button onClick={() => signOut()} className="text-red-600">
-            Sign out
-          </button>
-        </div>
-      </header>
-    );
+    redirect("/wrapped");
+    return <p>Redirecting...</p>;
   }
   return (
   <div className="flex justify-center items-center h-screen">

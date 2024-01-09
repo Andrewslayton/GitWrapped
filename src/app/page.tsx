@@ -6,7 +6,9 @@ export default function Home() {
   return (
     <main>
       <SigninButton />
-      if (session && session.user) {redirect("/wrapped")}
+      {/* if (session && session.user && session.user.access_token){ 
+        redirect("/wrapped")
+      } */}
     </main>
   );
 }
