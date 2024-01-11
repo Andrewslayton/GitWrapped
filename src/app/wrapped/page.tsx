@@ -27,7 +27,9 @@ const RepositoriesPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [commitCount2, setCommitCount2] = useState(0);
-  const totalRef = useRef(0);
+  const [highestCommitRepo, setHighestCommitRepo] = useState("");
+  const [highestCommitCount, setHighestCommitCount] = useState(0);
+
 
   useEffect(() => {
     const fetchRepositories = async () => {
@@ -44,6 +46,8 @@ const RepositoriesPage = () => {
           const reposResponse =
             await octokit.rest.repos.listForAuthenticatedUser();
           let totalCommits = 0;
+          let highestCommitCount = 0;
+          let highestCommitRepo = "";
           setRepositories(reposResponse.data as GitHubRepository[]);
           const repos = reposResponse.data as GitHubRepository[];
           for (const repo of repos) {
@@ -57,6 +61,10 @@ const RepositoriesPage = () => {
                 (sum, week) => sum + week.total,
                 0,
               );
+              if(repo.commitCount > highestCommitCount){
+                highestCommitCount = repo.commitCount;
+                highestCommitRepo = repo.name;
+              }
               totalCommits += repo.commitCount;
             } catch (commitError) {
               console.error(
@@ -66,6 +74,8 @@ const RepositoriesPage = () => {
             }
           }
           setCommitCount2(totalCommits);
+          setHighestCommitRepo(highestCommitRepo);
+          setHighestCommitCount(highestCommitCount);
         } catch (err) {
           console.error(err);
         } finally {
@@ -107,7 +117,7 @@ const RepositoriesPage = () => {
       <div className="w-1/2 mx-auto ">
       <Slide>
         <TotalCommitsSlide commitCount2={commitCount2}/>
-    
+        <MostCommittedRepoSlide highestcommited={highestCommitCount} repo={highestCommitRepo}/>
         {/* Add more slides as needed */}
       </Slide>
     </div>
