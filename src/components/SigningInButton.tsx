@@ -15,7 +15,7 @@ const SignInButton = () => {
     return <p>Redirecting...</p>;
   }
   return (
-  <div className="flex justify-center items-center h-screen">
+  <div className="flex justify-center items-center h-screen ">
     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
       <div className="border-8 border-blue-300 rounded-full w-3/4 h-3/4 absolute bounce-on-hover"></div>
       {/* <div className="border-4 border-green-300 rounded-full w-2/3 h-2/3 absolute"></div> */}

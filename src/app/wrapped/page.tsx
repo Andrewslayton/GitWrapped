@@ -1,10 +1,18 @@
 "use client";
 
+import MostCommittedRepoSlide from "@/components/MostCommitedRepoSlide";
+import TotalCommitsSlide from "@/components/TotalCommitsSlide";
 // pages/repositories.tsx
 import { Octokit } from "@octokit/rest";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import { Slide } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
 import { set } from "zod";
+import React from 'react';
+import styles from '@/styles/Home.module.css'
+import Link from 'next/link'
+
 
 interface GitHubRepository {
   id: number;
@@ -95,21 +103,14 @@ const RepositoriesPage = () => {
   }
 
   return (
-    <div>
-      <h1>Your GitHub Repositories</h1>
-      <button onClick={() => signOut()}>Sign out</button>
-      <div>
-        {repositories.map((repo) => (
-          <div key={repo.id}>
-            {repo.commitCount && (
-              <p>
-                {repo.name} - Commits: {repo.commitCount}
-              </p>
-            )}
-          </div>
-        ))}
-        total commits: {commitCount2}
-      </div>
+      <div className="flex items-center justify-center h-screen bg-black">
+      <div className="w-1/2 mx-auto ">
+      <Slide>
+        <TotalCommitsSlide commitCount2={commitCount2}/>
+    
+        {/* Add more slides as needed */}
+      </Slide>
+    </div>
     </div>
   );
 };
