@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@octokit/rest": "^20.0.2",
+    "@octokit/webhooks-definitions": "^3.67.3",
     "axios": "^1.6.5",
+    "github-calendar": "^2.3.2",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "octokit": "^3.1.2",
